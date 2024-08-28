@@ -116,4 +116,19 @@ module.exports = class Text3D {
 
     return { charMesh, charWidth: max.x - min.x };
   }
+
+  addTextMesh(text, position, scene, camera, size = 2.8, color = 0xffffff ) {
+    const textMesh = new THREE.Object3D();
+    const { charMesh, charWidth }  = this.drawChar3D(text, color, size);
+    textMesh.position.set(position.x, position.y, position.z);
+    textMesh.add(charMesh);
+    textMesh.children.forEach((child) => {
+      child.position.setX(child.position.x - charWidth / 2);
+    });
+    if (camera !== undefined && camera.quaternion !== undefined) {
+      textMesh.quaternion.copy(camera.quaternion);
+    }
+    scene.add(textMesh);
+    return textMesh
+  }
 }

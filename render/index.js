@@ -13,12 +13,15 @@ const RoadStructure = require('./roadStructure')
 const PlanningTrajectory = require('./trajectory.js');
 const PerceptionObstaclesNew = require('./obstaclesNew.js')
 const Prediction = require('./prediction.js')
+const PlanningMultiPolicy = require('./multi_policy');
+const Decision = require('./decision.js');
+const Dashboard =  require('./dashboard')
 
 const width = 1920, height = 1080;
 let initViewFactor = 19;
 
 const render = class render {
-  constructor(message, number) {
+  constructor(message, number, clipPath, images) {
     this.world = message
     this.width = width
     this.height = height
@@ -31,7 +34,6 @@ const render = class render {
     this.scene.add(directionalLight);
     
     const canvas = createCanvas(width, height);
-  
     
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, canvas: canvas });
     renderer.setSize(width, height);
@@ -59,7 +61,18 @@ const render = class render {
     this.perceptionObstaclesNew.update(this.world, this.coordinates, this.scene, this.camera, 1.1, true);
     this.prediction = new Prediction()
     this.prediction.update(this.world, this.coordinates, this.scene, this.camera);
+
+    this.planningMultiPolicy = new PlanningMultiPolicy();
+    this.planningMultiPolicy.update(this.world, this.coordinates, this.scene);
+
+    // The decision.
+    this.decision = new Decision(images);
+    this.decision.update(this.world, this.coordinates, this.scene);
+
+    // 车辆仪表盘信息
+    new Dashboard(this.world, this.scene, this.camera, images)
   
+
     renderer.render(this.scene, this.camera);
   
     const base64 = canvas.toDataURL('image/png', 1.0);
@@ -67,7 +80,7 @@ const render = class render {
     const bufferData = Buffer.from(base64Image, 'base64');
     
     try {
-      const outputDir = './output';
+      const outputDir = path.join(clipPath, 'dreamview_video_frame')
       if (!fs.existsSync(outputDir)) {
           fs.mkdirSync(outputDir);
       }
@@ -76,7 +89,6 @@ const render = class render {
       const filePath = path.join(outputDir, filename);
 
       fs.writeFileSync(filePath, bufferData, 'binary');
-      console.log(`Image saved`);
     } catch (err) {
       throw err;
     }
@@ -108,31 +120,29 @@ const render = class render {
 
     // this.scene.add(this.camera);
     let heading = this.world.autoDrivingCar.heading;
-    if (STORE.options.showBevRight) {
-      heading += (Math.PI / 2);
-    }
-
+    heading += (Math.PI / 2);
+    // heading = 1.5708
     this.camera.up.set(Math.cos(heading), Math.sin(heading), 0);
-    this.viewAngle = PARAMETERS.camera.viewAngle;
-    this.viewDistance = (
-      PARAMETERS.camera.laneWidth
-            * PARAMETERS.camera.laneWidthToViewDistanceRatio);
+    // this.viewAngle = PARAMETERS.camera.viewAngle;
+    // this.viewDistance = (
+    //   PARAMETERS.camera.laneWidth
+    //         * PARAMETERS.camera.laneWidthToViewDistanceRatio);
 
-    let deltaX = (this.viewDistance * 1.5 / this.camera.zoom * Math.cos(target.rotation.y)
-            * Math.cos(this.viewAngle));
-    let deltaY = (this.viewDistance * 1.5 / this.camera.zoom * Math.sin(target.rotation.y)
-                * Math.cos(this.viewAngle));
+    // let deltaX = (this.viewDistance * 1.5 / this.camera.zoom * Math.cos(target.rotation.y)
+    //         * Math.cos(this.viewAngle));
+    // let deltaY = (this.viewDistance * 1.5 / this.camera.zoom * Math.sin(target.rotation.y)
+    //             * Math.cos(this.viewAngle));
 
-    if (STORE.options.showFollowCar) {
-      this.camera.position.x = target.position.x + deltaX;
-      this.camera.position.y = target.position.y + deltaY;
-      this.camera.lookAt({
-        x: target.position.x + deltaX,
-        y: target.position.y + deltaY,
-        z: 50,
-      });
-      this.followCarFlag = true;
-    }
+    // if (STORE.options.showFollowCar) {
+    //   this.camera.position.x = target.position.x + deltaX;
+    //   this.camera.position.y = target.position.y + deltaY;
+    //   this.camera.lookAt({
+    //     x: target.position.x + deltaX,
+    //     y: target.position.y + deltaY,
+    //     z: 50,
+    //   });
+    //   this.followCarFlag = true;
+    // }
 
     const carPosition = this.adc.mesh.position;
     this.camera.position.set(carPosition.x, carPosition.y, 50);

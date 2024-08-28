@@ -1,12 +1,19 @@
 const THREE = require('three')
 const _ = require("loadsh")
+const fs = require('fs');
+const { loadImage } = require('node-canvas-webgl/lib');
+const { promisify } = require('util');
 const ThreeLine2D = require('three-line-2d')
 const ThreeLine2DBasicShader =  require('three-line-2d/shaders/basic');
 
+const loadImageAsync = promisify(loadImage);
 const DELTA_Z_OFFSET = 0.04;
 
 const BasicShader = ThreeLine2DBasicShader(THREE);
 const Line = ThreeLine2D(THREE);
+
+var RGBFormat = 1022;
+var RGBAFormat = 1023;
 
 const addOffsetZ = function (mesh, value) {
   if (value) {
@@ -135,9 +142,13 @@ const drawArrow = function (length, linewidth, conelength, conewidth, color, thi
 }
 
 const drawImage = function (img, width, height, x = 0, y = 0, z = 0) {
+  const texture = new THREE.Texture()
+  texture.format = RGBAFormat;
+  texture.image = img;
+  texture.needsUpdate = true;
   const material = new THREE.MeshBasicMaterial(
     {
-      map: textureLoader.load(img),
+      map: texture,
       transparent: true,
       depthWrite: false,
     },

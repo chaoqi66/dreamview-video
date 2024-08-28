@@ -172,6 +172,90 @@
                 }
               }
             },
+            "VehicleParam": {
+              "fields": {
+                "brand": {
+                  "type": "string",
+                  "id": 1
+                },
+                "frontEdgeToCenter": {
+                  "type": "string",
+                  "id": 2
+                },
+                "backEdgeToCenter": {
+                  "type": "string",
+                  "id": 3
+                },
+                "leftEdgeToCenter": {
+                  "type": "string",
+                  "id": 4
+                },
+                "rightEdgeToCenter": {
+                  "type": "string",
+                  "id": 5
+                },
+                "length": {
+                  "type": "string",
+                  "id": 6
+                },
+                "width": {
+                  "type": "string",
+                  "id": 7
+                },
+                "height": {
+                  "type": "string",
+                  "id": 8
+                },
+                "minTurnRadius": {
+                  "type": "string",
+                  "id": 9
+                },
+                "maxAcceleration": {
+                  "type": "string",
+                  "id": 10
+                },
+                "maxDeceleration": {
+                  "type": "string",
+                  "id": 11
+                },
+                "maxSteerAngle": {
+                  "type": "string",
+                  "id": 12
+                },
+                "maxSteerAngleRate": {
+                  "type": "string",
+                  "id": 13
+                },
+                "steerRatio": {
+                  "type": "string",
+                  "id": 14
+                },
+                "accG": {
+                  "type": "string",
+                  "id": 15
+                },
+                "wheelBase": {
+                  "type": "string",
+                  "id": 16
+                },
+                "rearWheelTrack": {
+                  "type": "string",
+                  "id": 17
+                },
+                "wheelRollingRadius": {
+                  "type": "string",
+                  "id": 18
+                },
+                "locHeadingOffset": {
+                  "type": "string",
+                  "id": 19
+                },
+                "maxAbsSpeedWhenStopped": {
+                  "type": "string",
+                  "id": 20
+                }
+              }
+            },
             "Object": {
               "fields": {
                 "id": {
@@ -348,6 +432,10 @@
                   "options": {
                     "default": null
                   }
+                },
+                "vehicleParam": {
+                  "type": "VehicleParam",
+                  "id": 38
                 },
                 "disengageType": {
                   "type": "DisengageType",
@@ -552,7 +640,6 @@
             "TrafficlightBoxSign": {
               "fields": {
                 "isExist": {
-                  "rule": "required",
                   "type": "bool",
                   "id": 1
                 },
@@ -577,22 +664,18 @@
             "TrafficlightSign": {
               "fields": {
                 "forwardTl": {
-                  "rule": "required",
                   "type": "TrafficlightBoxSign",
                   "id": 1
                 },
                 "lturnTl": {
-                  "rule": "required",
                   "type": "TrafficlightBoxSign",
                   "id": 2
                 },
                 "rturnTl": {
-                  "rule": "required",
                   "type": "TrafficlightBoxSign",
                   "id": 3
                 },
                 "uturnTl": {
-                  "rule": "required",
                   "type": "TrafficlightBoxSign",
                   "id": 4
                 },
@@ -1317,53 +1400,20 @@
                       "options": {
                         "packed": false
                       }
-                    }
-                  }
-                },
-                "Stamp": {
-                  "fields": {
-                    "sec": {
-                      "rule": "required",
-                      "type": "uint32",
-                      "id": 1
                     },
-                    "nsec": {
-                      "rule": "required",
-                      "type": "uint32",
-                      "id": 2
-                    }
-                  }
-                },
-                "FloatMatrix": {
-                  "fields": {
-                    "rows": {
-                      "rule": "repeated",
-                      "type": "FloatArray",
-                      "id": 1
-                    }
-                  }
-                },
-                "FloatArray": {
-                  "fields": {
-                    "values": {
-                      "rule": "repeated",
-                      "type": "float",
-                      "id": 1,
+                    "pdLane": {
+                      "type": "bool",
+                      "id": 22,
                       "options": {
-                        "packed": false
+                        "default": false
                       }
-                    }
-                  }
-                },
-                "PidProb": {
-                  "fields": {
-                    "id": {
-                      "type": "uint32",
-                      "id": 1
                     },
-                    "prob": {
-                      "type": "float",
-                      "id": 2
+                    "naviLane": {
+                      "type": "bool",
+                      "id": 23,
+                      "options": {
+                        "default": false
+                      }
                     }
                   }
                 },
@@ -1416,6 +1466,13 @@
                     }
                   }
                 },
+                "INTERSECTIONTYPE": {
+                  "values": {
+                    "UNKNOWN_INTERSECTIONTYPE": 0,
+                    "JUNCTION": 1,
+                    "M2N": 2
+                  }
+                },
                 "Intersection": {
                   "fields": {
                     "intersectionId": {
@@ -1440,6 +1497,31 @@
                       "rule": "repeated",
                       "type": "LaneGroup",
                       "id": 5
+                    },
+                    "intersectionType": {
+                      "type": "INTERSECTIONTYPE",
+                      "id": 6
+                    },
+                    "visibleIntersection": {
+                      "type": "bool",
+                      "id": 7,
+                      "options": {
+                        "default": false
+                      }
+                    },
+                    "pdIntersection": {
+                      "type": "bool",
+                      "id": 8,
+                      "options": {
+                        "default": false
+                      }
+                    },
+                    "naviIntersection": {
+                      "type": "bool",
+                      "id": 9,
+                      "options": {
+                        "default": false
+                      }
                     }
                   }
                 },
@@ -1586,7 +1668,7 @@
                   "type": "double",
                   "id": 6
                 },
-                "trafficLightFuse": {
+                "trafficLight": {
                   "type": "double",
                   "id": 7
                 },
@@ -1609,46 +1691,6 @@
                 "lanemap": {
                   "type": "double",
                   "id": 12
-                }
-              }
-            },
-            "DeltaTime2": {
-              "fields": {
-                "chassis": {
-                  "type": "double",
-                  "id": 1
-                },
-                "fusionObject": {
-                  "type": "double",
-                  "id": 2
-                },
-                "localization": {
-                  "type": "double",
-                  "id": 3
-                },
-                "planning": {
-                  "type": "double",
-                  "id": 4
-                },
-                "prediction": {
-                  "type": "double",
-                  "id": 5
-                },
-                "trafficLightFuse": {
-                  "type": "double",
-                  "id": 6
-                },
-                "control": {
-                  "type": "double",
-                  "id": 7
-                },
-                "rtk": {
-                  "type": "double",
-                  "id": 8
-                },
-                "roadStructure": {
-                  "type": "double",
-                  "id": 9
                 }
               }
             },
@@ -1753,12 +1795,10 @@
             "VehicleFlowPoint": {
               "fields": {
                 "x": {
-                  "rule": "required",
                   "type": "double",
                   "id": 1
                 },
                 "y": {
-                  "rule": "required",
                   "type": "double",
                   "id": 2
                 }
@@ -1767,7 +1807,6 @@
             "VehicleFlowLine": {
               "fields": {
                 "flowId": {
-                  "rule": "required",
                   "type": "int32",
                   "id": 1
                 },
@@ -1790,12 +1829,10 @@
             "PredictionPathPoint": {
               "fields": {
                 "x": {
-                  "rule": "required",
                   "type": "double",
                   "id": 1
                 },
                 "y": {
-                  "rule": "required",
                   "type": "double",
                   "id": 2
                 },
@@ -1968,6 +2005,24 @@
                 "rawModelProbability": {
                   "type": "double",
                   "id": 11
+                },
+                "alterProbabilities": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 12,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "entryLaneIds": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 13
+                },
+                "exitLaneIds": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 14
                 }
               }
             },
@@ -2053,22 +2108,18 @@
             "Node": {
               "fields": {
                 "id": {
-                  "rule": "required",
                   "type": "string",
                   "id": 1
                 },
                 "x": {
-                  "rule": "required",
                   "type": "double",
                   "id": 2
                 },
                 "y": {
-                  "rule": "required",
                   "type": "double",
                   "id": 3
                 },
                 "type": {
-                  "rule": "required",
                   "type": "NodeType",
                   "id": 4
                 }
@@ -2077,12 +2128,10 @@
             "Edge": {
               "fields": {
                 "fromId": {
-                  "rule": "required",
                   "type": "string",
                   "id": 1
                 },
                 "toId": {
-                  "rule": "required",
                   "type": "string",
                   "id": 2
                 }
@@ -2091,7 +2140,6 @@
             "WorldTopoTree": {
               "fields": {
                 "header": {
-                  "rule": "required",
                   "type": "TopoTreeHeader",
                   "id": 1
                 },
@@ -2155,6 +2203,46 @@
                   "rule": "repeated",
                   "type": "Vec3D",
                   "id": 3
+                }
+              }
+            },
+            "ReferenceLane": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "pathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 2
+                },
+                "fallback": {
+                  "type": "bool",
+                  "id": 3,
+                  "options": {
+                    "default": false
+                  }
+                },
+                "inUse": {
+                  "type": "bool",
+                  "id": 4,
+                  "options": {
+                    "default": false
+                  }
+                }
+              }
+            },
+            "ReferenceTrajectory": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "pathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 2
                 }
               }
             },
@@ -2380,10 +2468,6 @@
                   "type": "DeltaTime1",
                   "id": 49
                 },
-                "deltaTime2": {
-                  "type": "DeltaTime2",
-                  "id": 50
-                },
                 "shoulders": {
                   "rule": "repeated",
                   "type": "shoulder_info",
@@ -2444,6 +2528,16 @@
                 "planningMode": {
                   "type": "PlanningMode",
                   "id": 65
+                },
+                "referenceLane": {
+                  "rule": "repeated",
+                  "type": "ReferenceLane",
+                  "id": 66
+                },
+                "referenceTrajectory": {
+                  "rule": "repeated",
+                  "type": "ReferenceTrajectory",
+                  "id": 67
                 }
               },
               "nested": {
@@ -28252,6 +28346,46 @@
                 }
               }
             },
+            "ReferenceLane": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "pathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 2
+                },
+                "fallback": {
+                  "type": "bool",
+                  "id": 3,
+                  "options": {
+                    "default": false
+                  }
+                },
+                "inUse": {
+                  "type": "bool",
+                  "id": 4,
+                  "options": {
+                    "default": false
+                  }
+                }
+              }
+            },
+            "ReferenceTrajectory": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "pathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 2
+                }
+              }
+            },
             "ADCTrajectory": {
               "fields": {
                 "header": {
@@ -28265,6 +28399,16 @@
                 "totalPathTime": {
                   "type": "double",
                   "id": 3
+                },
+                "referenceLane": {
+                  "rule": "repeated",
+                  "type": "ReferenceLane",
+                  "id": 4
+                },
+                "referenceTrajectory": {
+                  "rule": "repeated",
+                  "type": "ReferenceTrajectory",
+                  "id": 5
                 },
                 "estop": {
                   "type": "EStop",
@@ -28379,6 +28523,13 @@
                 "effLcNnInfo": {
                   "type": "string",
                   "id": 33
+                },
+                "isReadyToAutoDrive": {
+                  "type": "bool",
+                  "id": 34,
+                  "options": {
+                    "default": true
+                  }
                 }
               },
               "nested": {
@@ -28404,6 +28555,121 @@
                     "PATH_FALLBACK": 2,
                     "SPEED_FALLBACK": 3,
                     "PATH_REUSED": 4
+                  }
+                }
+              }
+            },
+            "ADCPlanningTrajectory": {
+              "fields": {
+                "header": {
+                  "type": "apollo.common.Header",
+                  "id": 1
+                },
+                "estop": {
+                  "type": "EStop",
+                  "id": 2
+                },
+                "isReplan": {
+                  "type": "bool",
+                  "id": 3,
+                  "options": {
+                    "default": false
+                  }
+                },
+                "gear": {
+                  "type": "apollo.a_canbus.Chassis.GearPosition",
+                  "id": 4
+                },
+                "trajectoryPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.TrajectoryPoint",
+                  "id": 5
+                },
+                "pathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 6
+                },
+                "decision": {
+                  "type": "apollo.planning.DecisionResult",
+                  "id": 7
+                },
+                "trajectoryType": {
+                  "type": "ADCTrajectory.TrajectoryType",
+                  "id": 8,
+                  "options": {
+                    "default": "UNKNOWN"
+                  }
+                },
+                "expectationSpeed": {
+                  "type": "float",
+                  "id": 9,
+                  "options": {
+                    "default": 0
+                  }
+                },
+                "perceptionTimestamp": {
+                  "type": "double",
+                  "id": 10
+                },
+                "controlMode": {
+                  "type": "apollo.planning_internal.ControlMode",
+                  "id": 11
+                },
+                "lonBehavior": {
+                  "type": "apollo.planning_internal.IlqrDebug.LonBehavior",
+                  "id": 12
+                },
+                "minDistanceToObstacles": {
+                  "type": "double",
+                  "id": 13
+                },
+                "minDistanceToLeftShoulders": {
+                  "type": "double",
+                  "id": 14
+                },
+                "minDistanceToRightShoulders": {
+                  "type": "double",
+                  "id": 15
+                },
+                "enableInsensitiveParameters": {
+                  "type": "bool",
+                  "id": 16,
+                  "options": {
+                    "default": false
+                  }
+                },
+                "minPathLateralSpace": {
+                  "type": "double",
+                  "id": 17
+                },
+                "eachPathPointLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 18,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "ilqrPathPoint": {
+                  "rule": "repeated",
+                  "type": "apollo.common.PathPoint",
+                  "id": 19
+                },
+                "eachPathPointLeftLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 20,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "eachPathPointRightLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 21,
+                  "options": {
+                    "packed": false
                   }
                 }
               }
@@ -28900,6 +29166,10 @@
                   "options": {
                     "packed": false
                   }
+                },
+                "isDeadCar": {
+                  "type": "bool",
+                  "id": 6
                 }
               }
             },
@@ -29525,6 +29795,13 @@
                   "type": "double",
                   "id": 18
                 },
+                "enableInsensitiveParameters": {
+                  "type": "bool",
+                  "id": 19,
+                  "options": {
+                    "default": false
+                  }
+                },
                 "isEmergency": {
                   "type": "bool",
                   "id": 101
@@ -29545,6 +29822,38 @@
                 "emergencyTriggerInfo": {
                   "type": "string",
                   "id": 105
+                },
+                "efficientLaneSeq": {
+                  "type": "apollo.prediction.EfficientLaneSequence",
+                  "id": 106
+                },
+                "eachPathPointLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 107,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "minPathLateralSpace": {
+                  "type": "double",
+                  "id": 108
+                },
+                "eachPathPointLeftLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 109,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "eachPathPointRightLateralSpace": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 110,
+                  "options": {
+                    "packed": false
+                  }
                 }
               },
               "nested": {
@@ -29965,6 +30274,24 @@
                 "rawModelProbability": {
                   "type": "double",
                   "id": 11
+                },
+                "alterProbabilities": {
+                  "rule": "repeated",
+                  "type": "double",
+                  "id": 12,
+                  "options": {
+                    "packed": false
+                  }
+                },
+                "entryLaneIds": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 13
+                },
+                "exitLaneIds": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 14
                 }
               }
             },
@@ -31722,6 +32049,13 @@
                 "vehicleFlowLines": {
                   "type": "VehicleFlowLines",
                   "id": 17
+                },
+                "naviRouteTimestamp": {
+                  "type": "int64",
+                  "id": 18,
+                  "options": {
+                    "default": -1
+                  }
                 }
               }
             },
@@ -34940,92 +35274,163 @@
                     }
                   }
                 },
-                "LaneBoundary": {
+                "LaneMarking": {
                   "fields": {
-                    "boundary": {
-                      "type": "Linesegment",
+                    "markingId": {
+                      "rule": "required",
+                      "type": "uint32",
                       "id": 1
                     },
-                    "boundaryType": {
-                      "type": "Boundarytype",
+                    "markingSkeleton": {
+                      "rule": "required",
+                      "type": "Linesegment",
                       "id": 2
                     },
-                    "boundaryColor": {
-                      "type": "Boundarycolor",
+                    "markingType": {
+                      "rule": "required",
+                      "type": "DividerMarkingType",
                       "id": 3
+                    },
+                    "roadBoundaryType": {
+                      "type": "RoadBoundaryType",
+                      "id": 4
+                    },
+                    "isRoadBoundary": {
+                      "type": "bool",
+                      "id": 5
                     }
                   },
                   "nested": {
-                    "Boundarytype": {
+                    "DividerMarkingType": {
                       "values": {
-                        "VIRTUALLINE": 0,
-                        "SOLIDLINE": 1,
-                        "DASHEDLINE": 2,
-                        "LEFT_DOUBLESOLIDLINE": 3,
-                        "RIGHT_DOUBLESOLIDLINE": 4,
-                        "LEFT_DOUBLEDASHEDLINE": 5,
-                        "RIGHT_DOUBLEDASHEDLINE": 6,
-                        "LEFT_DOTTEDSOLIDLINE": 7,
-                        "RIGHT_DOTTEDSOLIDLINE": 8,
-                        "LEFT_SOLIDDOTTEDLINE": 9,
-                        "RIGHT_SOLIDDOTTEDLINE": 10,
-                        "PHYSICALLINE": 11,
-                        "OTHERS": 100
+                        "DMT_MARKING_NONE": 0,
+                        "DMT_MARKING_LONG_DASHED_LINE": 1,
+                        "DMT_MARKING_DOUBLE_SOLID_LINE": 2,
+                        "DMT_MARKING_SINGLE_SOLID_LINE": 3,
+                        "DMT_MARKING_RIGHT_SOLID_LINE_LEFT_DASHED_LINE": 4,
+                        "DMT_MARKING_LEFT_SOLID_LINE_RIGHT_DASHED_LINE": 5,
+                        "DMT_MARKING_DOUBLE_DASHED_LINE": 9,
+                        "DMT_MARKING_VIRTUAL_FIT": 22,
+                        "DMT_MARKING_VIRTUAL": 23,
+                        "DMT_MARKING_UNKNOWN": 254
                       }
                     },
-                    "Boundarycolor": {
+                    "RoadBoundaryType": {
                       "values": {
-                        "WHITE": 0,
-                        "YELLOW": 1,
-                        "NONE": 2,
-                        "OTHER_COLORS": 100
+                        "ROAD_BOUNDARY_TYPE_NONE": 0,
+                        "ROAD_BOUNDARY_TYPE_CURB": 1,
+                        "ROAD_BOUNDARY_TYPE_BARRIER": 2,
+                        "ROAD_BOUNDARY_TYPE_NATURAL": 3,
+                        "ROAD_BOUNDARY_TYPE_VIRTUAL": 4,
+                        "ROAD_BOUNDARY_TYPE_DITCH": 5
                       }
+                    }
+                  }
+                },
+                "LaneMarkings": {
+                  "fields": {
+                    "laneMarking": {
+                      "rule": "repeated",
+                      "type": "LaneMarking",
+                      "id": 2
                     }
                   }
                 },
                 "Lane": {
                   "fields": {
-                    "uid": {
-                      "type": "string",
+                    "id": {
+                      "type": "uint32",
                       "id": 1
                     },
                     "skeleton": {
                       "type": "Linesegment",
                       "id": 2
                     },
-                    "leftBoundary": {
-                      "type": "LaneBoundary",
-                      "id": 3
-                    },
-                    "rightBoundary": {
-                      "type": "LaneBoundary",
-                      "id": 4
-                    },
                     "type": {
                       "type": "LaneType",
-                      "id": 5
+                      "id": 3
                     },
                     "turn": {
                       "type": "LaneTurn",
-                      "id": 6
+                      "id": 4
                     },
-                    "predecessorUid": {
+                    "predecessorId": {
                       "rule": "repeated",
-                      "type": "string",
-                      "id": 7
+                      "type": "uint32",
+                      "id": 5,
+                      "options": {
+                        "packed": false
+                      }
                     },
-                    "successorUid": {
+                    "successorId": {
                       "rule": "repeated",
-                      "type": "string",
-                      "id": 8
-                    },
-                    "id": {
-                      "type": "int32",
-                      "id": 9
+                      "type": "uint32",
+                      "id": 6,
+                      "options": {
+                        "packed": false
+                      }
                     },
                     "topoFiltered": {
                       "type": "bool",
-                      "id": 10
+                      "id": 7,
+                      "options": {
+                        "default": true
+                      }
+                    },
+                    "roadId": {
+                      "rule": "repeated",
+                      "type": "uint32",
+                      "id": 8,
+                      "options": {
+                        "packed": false
+                      }
+                    },
+                    "leftId": {
+                      "rule": "repeated",
+                      "type": "uint32",
+                      "id": 9,
+                      "options": {
+                        "packed": false
+                      }
+                    },
+                    "rightId": {
+                      "rule": "repeated",
+                      "type": "uint32",
+                      "id": 10,
+                      "options": {
+                        "packed": false
+                      }
+                    },
+                    "color": {
+                      "type": "LaneColor",
+                      "id": 11
+                    },
+                    "leftMarking": {
+                      "type": "LaneMarkings",
+                      "id": 12
+                    },
+                    "rightMarking": {
+                      "type": "LaneMarkings",
+                      "id": 13
+                    },
+                    "cutoff": {
+                      "type": "bool",
+                      "id": 14,
+                      "options": {
+                        "default": false
+                      }
+                    },
+                    "cutoffStartIndex": {
+                      "type": "uint32",
+                      "id": 15
+                    },
+                    "cutoffEndIndex": {
+                      "type": "uint32",
+                      "id": 16
+                    },
+                    "cutoffInverse": {
+                      "type": "bool",
+                      "id": 17
                     }
                   },
                   "nested": {
@@ -35035,7 +35440,11 @@
                         "EMERGENCY": 2,
                         "TIDE": 3,
                         "BUS": 4,
-                        "UNKNOWN": 5
+                        "UNKNOWN": 5,
+                        "UNCONVENTION": 6,
+                        "WAIT_LEFT": 7,
+                        "WAIT_RIGHT": 8,
+                        "WAIT_FORWARD": 9
                       }
                     },
                     "LaneTurn": {
@@ -35049,8 +35458,26 @@
                         "LEFT_RIGHT_STRAIGHT": 7,
                         "U_TURN": 8,
                         "U_STRAIGHT": 9,
+                        "U_LEFT": 10,
                         "U_STRAIGHT_LEFT": 11,
-                        "U_STRAIGHT_RIGHT": 13
+                        "U_RIGHT": 12,
+                        "U_STRAIGHT_RIGHT": 13,
+                        "U_LEFT_RIGHT": 14,
+                        "U_LEFT_RIGHT_STRAIGHT": 15
+                      }
+                    },
+                    "LaneColor": {
+                      "values": {
+                        "RED": 1,
+                        "GREEN": 2,
+                        "BLUE": 3,
+                        "WHITE": 4,
+                        "YELLOW": 5,
+                        "BLACK": 6,
+                        "PURPLE": 7,
+                        "ORANGE": 8,
+                        "PINK": 9,
+                        "OTHER": 10
                       }
                     }
                   }
@@ -35078,24 +35505,23 @@
                 "Header": {
                   "fields": {
                     "seq": {
-                      "rule": "required",
                       "type": "uint32",
                       "id": 1
                     },
                     "nsecTimestamp": {
-                      "rule": "required",
                       "type": "string",
                       "id": 2
                     },
                     "frameId": {
-                      "rule": "required",
                       "type": "string",
                       "id": 3
                     },
                     "isValid": {
-                      "rule": "required",
                       "type": "int32",
-                      "id": 4
+                      "id": 4,
+                      "options": {
+                        "default": 0
+                      }
                     },
                     "overlap": {
                       "type": "float",
@@ -35104,6 +35530,42 @@
                     "capsulename": {
                       "type": "string",
                       "id": 6
+                    },
+                    "poseUtmx": {
+                      "type": "double",
+                      "id": 7
+                    },
+                    "poseUtmy": {
+                      "type": "double",
+                      "id": 8
+                    },
+                    "poseUtmz": {
+                      "type": "double",
+                      "id": 9
+                    },
+                    "poseQw": {
+                      "type": "double",
+                      "id": 10
+                    },
+                    "poseQx": {
+                      "type": "double",
+                      "id": 11
+                    },
+                    "poseQy": {
+                      "type": "double",
+                      "id": 12
+                    },
+                    "poseQz": {
+                      "type": "double",
+                      "id": 13
+                    },
+                    "zoneId": {
+                      "type": "string",
+                      "id": 14
+                    },
+                    "locStatus": {
+                      "type": "float",
+                      "id": 15
                     }
                   }
                 },
@@ -35147,6 +35609,26 @@
                       "rule": "repeated",
                       "type": "Road",
                       "id": 8
+                    },
+                    "crosswalk": {
+                      "rule": "repeated",
+                      "type": "Crosswalk",
+                      "id": 9
+                    },
+                    "trafficLight": {
+                      "rule": "repeated",
+                      "type": "TrafficLight",
+                      "id": 10
+                    },
+                    "naviPoints": {
+                      "rule": "repeated",
+                      "type": "PointUNI",
+                      "id": 11
+                    },
+                    "curb": {
+                      "rule": "repeated",
+                      "type": "Linesegment",
+                      "id": 12
                     }
                   }
                 },
@@ -35232,7 +35714,7 @@
                       "id": 5
                     },
                     "heading": {
-                      "type": "int32",
+                      "type": "float",
                       "id": 6
                     },
                     "polygon": {

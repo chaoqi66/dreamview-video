@@ -773,7 +773,7 @@ let store = {
       showPlanningCar: false,
       showPlanningPath: true,
       showPlanningRSSInfo: false,
-      showPlanningMultiPolicy: false,
+      showPlanningMultiPolicy: true,
       showRouting: false,
       showPredictionMajor: true,
       showVehicleFlowLines: false,

@@ -90,7 +90,6 @@ module.exports = class AutoDrivingCar {
     }
     this.mesh.position.set(position.x, position.y, 0);
     this.mesh.rotation.y = pose.heading
-    console.log(this.mesh.rotation.y)
   }
 
 
