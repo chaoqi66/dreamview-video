@@ -1,0 +1,29 @@
+{
+  "nested": {
+    "apollo": {
+      "nested": {
+        "dreamview": {
+          "nested": {
+            "PointCloud": {
+              "fields": {
+                "num": {
+                  "rule": "repeated",
+                  "type": "float",
+                  "id": 1
+                },
+                "deltaT1": {
+                  "type": "double",
+                  "id": 2
+                },
+                "deltaT2": {
+                  "type": "double",
+                  "id": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
