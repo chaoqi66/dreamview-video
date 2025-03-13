@@ -1,4 +1,4 @@
-const fs = require('fs').promises;
+const fs = require('fs');
 const path = require('path');
 const render = require('./render');
 const { sortBinFilesAsync, readBinaryFile } = require('./util/binary');
@@ -11,9 +11,14 @@ const loadImgPromises = require('./util/loadImage')
 
 async function main(images) {
     try {
-        const clipPath = process.argv[2]
 
-        const binaryFolder = path.join(clipPath, 'simulation_world_binary')
+        const clipPath = './output';
+
+        // 检查 output 文件夹是否存在，如果不存在则创建
+        if (!fs.existsSync(clipPath)) {
+            fs.mkdirSync(clipPath, { recursive: true });
+        }
+        const binaryFolder = path.join('', 'binary')
 
         const sortedFilePaths = await sortBinFilesAsync(binaryFolder);
         sortedFilePaths.slice(0, 300).forEach(async filePath => {
